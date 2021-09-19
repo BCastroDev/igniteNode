@@ -90,7 +90,19 @@ return response.status(201).send();
 
 })
 
+app.get("/statement/date", verifyIfExistsAccountCPF, (request, response)=>{ //Buscar movimentações por data
+    const {costumer} = request;
+    const {date} = request.query;
 
+    const dateFormat = new Date(date + " 00:00"); //Hack pra pegar as movimentações de qualquer hora
+
+    const statement = costumer.statement.filter((statement) => 
+    statement.created_at.toDateString() === 
+    new Date(dateFormat).toDateString()
+);
+
+    return response.json(statement);
+})
 
 
 
