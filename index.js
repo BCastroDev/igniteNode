@@ -18,7 +18,7 @@ function verifyIfExistsAccountCPF (request, response, next) { //Midleware de ver
  
 }
 
-function getBalance (statement) {
+function getBalance (statement) { //Tranforma todas as entradas e saídas em um valor final para ser retornado(?)
     const balance = statement.reduce((acc, operation) => {
         if (operation.type === "credit") {
             return acc + operation.amount
@@ -104,7 +104,35 @@ app.get("/statement/date", verifyIfExistsAccountCPF, (request, response)=>{ //Bu
     return response.json(statement);
 })
 
+app.put("/account", verifyIfExistsAccountCPF, (request, response)=> {// atualiza dados
+    const {name} = request.body;
+    const {costumer} = request;
+    
+    costumer.name = name;
 
+    return response.status(201).send()
+})
+
+app.get("/account", verifyIfExistsAccountCPF, (request, response)=>{ //Recebr info da conta
+    const {costumer} = request;
+
+    return response.json(costumer);
+
+})
+
+app.delete("/account", verifyIfExistsAccountCPF, (request, response)=>{ //deleta uma conta
+    const {costumer} = request; 
+    costumers.splice(costumer,1);
+
+    return response.status(200).json(costumers);
+
+})
+
+app.get("/balance", verifyIfExistsAccountCPF, (request, response)=>{ //Pega o Balance da conta
+    const {costumer} = request;
+    const balance = getBalance(costumer.statement);
+    return response.json(balance);
+})
 
 //O Listen vai o final de tudo
 app.listen(3333);
