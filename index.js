@@ -6,6 +6,7 @@ const costumers = [];
 
 app.use(express.json());
 
+
 function verifyIfExistsAccountCPF (request, response, next) { //Midleware de verificação da existência do usuário
     const { cpf } = request.headers; //Destructuring dos header que estão sendo enviados na requisição
     const costumer = costumers.find((costumerProcurado) => costumerProcurado.cpf === cpf );
